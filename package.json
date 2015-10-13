@@ -7,19 +7,22 @@
     "type": "git",
     "url": "https://github.com/backhand/unity.git"
   },
-  "main": "./lib/unity",
+  "main": "./index.js",
   "dependencies": {
     "lodash": "^3.10.1",
-    "require-directory": "^2.1.1"
+    "require-directory": "^2.1.1",
+    "semver": "^5.0.3"
   },
   "devDependencies": {
+    "babel": "^5.8.23",
     "bluebird": "^2.10.2",
     "mocha": "^2.3.3",
     "pegjs": "^0.9.0"
   },
   "scripts": {
     "test": "node_modules/mocha/bin/mocha test --reporter spec test",
-    "build": "node_modules/.bin/pegjs ./lib/grammar.pegjs ./lib/parser.js"
+    "build-parser": "node_modules/.bin/pegjs ./lib/grammar.pegjs ./lib/parser.js",
+    "build-es5": "node_modules/.bin/babel ./lib/unity.js -o ./lib/unity.es5.js"
   },
   "license": "MIT",
   "engines": {
