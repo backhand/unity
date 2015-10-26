@@ -3,19 +3,19 @@ var path = require('path');
 
 var Unity = require('..');
 
-var rootResolver = require('./resolvers/root');
+var rootBinding = require('./bindings/root');
 
 var instance;
 
 describe('unity', function() {
   before(function() {
     instance = new Unity({
-      resolvers: path.join(__dirname, 'resolvers')
+      bindings: path.join(__dirname, 'bindings')
     });
   });
 
   beforeEach(function() {
-    rootResolver.setData({
+    rootBinding.setData({
       d: {
         a: 'hello'
       }
