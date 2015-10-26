@@ -1,22 +1,36 @@
 var Promise = Promise || require('bluebird');
 var _ = require('lodash');
 
-module.exports = [{
+var data = {
+  d: {
+
+  }
+};
+
+
+var resolvers = [{
   path: '/root/a/id:int',
-  resolve: function(context) {
+  resolver: function(context) {
     var id = context.id;
-  
+
     return new Promise(function(resolve, reject) {
       resolve({
-        id: id
+        id: id,
+        value: 'abc'
       });
     });
   }
 }, {
+  path: '/root/a/id:int/property:string',
+  defer: true,
+  resolver: function(context) {
+    return context.deferred[context.property];
+  }
+}, {
   path: '/root/b/id:string',
-  resolve: function(context) {
+  resolver: function(context) {
     var id = context.id;
-  
+
     return new Promise(function(resolve, reject) {
       resolve({
         id: id
@@ -25,7 +39,7 @@ module.exports = [{
   }
 }, {
   path: '/root/c?orderBy=id',
-  resolve: function(context) {
+  resolver: function(context) {
     var id = context.id;
 
     var data = [{
@@ -43,12 +57,34 @@ module.exports = [{
     }, {
       id: 5
     }];
-  
+
     return new Promise(function(resolve, reject) {
       resolve(_.sortBy(data, context.query.orderBy));
     });
   }
+}, {
+  path: '/root/d/id:string',
+  resolver: {
+    get: function(context) {
+      return new Promise(function(resolve, reject) {
+        resolve(data.d[context.id]);
+      });
+    },
+    set: function(context, value) {
+      return new Promise(function(resolve, reject) {
+        resolve(data.d[context.id] = value);
+      });
+    },
+    del: function(context) {
+      return new Promise(function(resolve, reject) {
+        delete data.d[context.id];
+        resolve(true);
+      });
+    }
+  }
 }];
+resolvers.setData = function(value) {
+  data = value;
+};
 
-
-// recipients/contactId:int/messages/messageId:int?orderBy=id&orderDirection=asc|desc
+module.exports = resolvers;
