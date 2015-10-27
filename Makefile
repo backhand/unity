@@ -9,7 +9,7 @@ PARSEROBJS = $(PARSERSRC:.pegjs=.js)
 
 .DEFAULT_GOAL=all
 
-.PHONY: docs test es5 clean
+.PHONY: docs test es5 clean benchmark
 
 lib/unity.es5.js: lib/unity.js
 	node_modules/.bin/babel ./lib/unity.js -o ./lib/unity.es5.js
@@ -36,3 +36,6 @@ test: es5 parser
 test-all: test
 	$(NODE_0_10) node_modules/mocha/bin/mocha test --reporter spec test
 	$(NODE_0_12) node_modules/mocha/bin/mocha test --reporter spec test
+
+benchmark:
+	node benchmark/benchmark.js
