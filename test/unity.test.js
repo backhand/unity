@@ -1,5 +1,6 @@
 var assert = require('assert');
 var path = require('path');
+var fs = require('fs');
 
 var Unity = require('..');
 
@@ -34,6 +35,42 @@ describe('unity', function() {
     });
   });
 
+  it('should throw an error on unresolvable path', function(done) {
+    try {
+      instance.get('/root/zyx').then(function(result) {
+        assert.fail('Should not be here');
+        done();
+      });
+    } catch (err) {
+      assert.ok(err instanceof Unity.UnresolvablePathError);
+      done();
+    }
+  });
+
+  it('should throw an error on undefined action', function(done) {
+    try {
+      instance.add('/root/a/1').then(function(result) {
+        assert.fail('Should not be here');
+        done();
+      });
+    } catch (err) {
+      assert.ok(err instanceof Unity.UndefinedActionError);
+      done();
+    }
+  });
+
+  it('should throw an error on undefined protocol', function(done) {
+    try {
+      instance.get('buffer:///root/a/1').then(function(result) {
+        assert.fail('Should not be here');
+        done();
+      });
+    } catch (err) {
+      assert.ok(err instanceof Unity.UndefinedProtocolError);
+      done();
+    }
+  });
+
   it('should resolve a deferred property value from /root/a/1/value', function(done) {
     instance.get('/root/a/1/value').then(function(result) {
       assert.ok(result);
@@ -62,6 +99,18 @@ describe('unity', function() {
     });
   });
 
+  it('should throw an error on illegal query', function(done) {
+    try {
+      instance.get('/root/c?gargle=gorgle').then(function(result) {
+        assert.fail('Should not be here');
+        done();
+      });
+    } catch (err) {
+      assert.ok(err instanceof Unity.IllegalQueryError);
+      done();
+    }
+  });
+
   it('should copy a value by path', function(done) {
     instance.cpy('/root/d/a', '/root/d/b')
       .then(function(result) {
@@ -88,6 +137,50 @@ describe('unity', function() {
         assert.ok(!result);
 
         done();
+      });
+  });
+
+  it('should copy a file as buffer by name', function(done) {
+    instance.cpy('buffer:///root/files/emojighost.png', 'buffer:///root/files/test.png')
+      .then(function(result) {
+        var stat = fs.statSync(__dirname + '/files/test.png');
+        assert.ok(stat);
+        assert.equal(stat.size, 48999);
+
+        return instance.del('/root/files/test.png');
+      }).then(function(result) {
+        try {
+          var stat = fs.statSync(__dirname + '/files/test.png');
+          assert.fail('File should not exist');
+        } catch(err) {
+          assert.ok(err);
+        }
+
+        done();
+      }).catch(function(err) {
+        done(err);
+      });
+  });
+
+  it('should copy a file as stream by name', function(done) {
+    instance.cpy('stream:///root/files/emojighost.png', 'stream:///root/files/test.png')
+      .then(function(result) {
+        var stat = fs.statSync(__dirname + '/files/test.png');
+        assert.ok(stat);
+        assert.equal(stat.size, 48999);
+
+        return instance.del('/root/files/test.png');
+      }).then(function(result) {
+        try {
+          var stat = fs.statSync(__dirname + '/files/test.png');
+          assert.fail('File should not exist');
+        } catch(err) {
+          assert.ok(err);
+        }
+
+        done();
+      }).catch(function(err) {
+        done(err);
       });
   });
 });

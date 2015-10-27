@@ -7,7 +7,9 @@ JSOBJS = $(JSSRC:.js=.es5.js)
 PARSERSRC = lib/parser.pegjs
 PARSEROBJS = $(PARSERSRC:.pegjs=.js)
 
-phony: docs test es5
+.DEFAULT_GOAL=all
+
+.PHONY: docs test es5 clean
 
 lib/unity.es5.js: lib/unity.js
 	node_modules/.bin/babel ./lib/unity.js -o ./lib/unity.es5.js
@@ -21,6 +23,12 @@ lib/parser.js: lib/parser.pegjs
 es5: $(JSOBJS)
 
 parser: $(PARSEROBJS)
+
+all: es5 parser
+
+clean:
+	-rm $(JSOBJS)
+	-rm $(PARSEROBJS)
 
 test: es5 parser
 	node_modules/mocha/bin/mocha test --reporter spec test
