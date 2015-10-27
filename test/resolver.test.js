@@ -1,6 +1,7 @@
 var assert = require('assert');
 var path = require('path');
 var util = require('util');
+var Promise = Promise || require('bluebird');
 
 var Resolver = require('../lib/resolver');
 

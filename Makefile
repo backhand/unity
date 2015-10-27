@@ -1,3 +1,4 @@
+NODE_0_10=node-010
 NODE_0_12=node-012
 
 JSSRC = lib/unity.js lib/resolver/resolver.js
@@ -25,4 +26,5 @@ test: es5 parser
 	node_modules/mocha/bin/mocha test --reporter spec test
 
 test-all: test
+	$(NODE_0_10) node_modules/mocha/bin/mocha test --reporter spec test
 	$(NODE_0_12) node_modules/mocha/bin/mocha test --reporter spec test
