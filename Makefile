@@ -11,6 +11,9 @@ PARSEROBJS = $(PARSERSRC:.pegjs=.js)
 
 .PHONY: docs test es5 clean benchmark
 
+docs: es5
+	node_modules/jsdoc/jsdoc.js -c docs/jsdoc.conf.json
+
 lib/unity.es5.js: lib/unity.js
 	node_modules/.bin/babel ./lib/unity.js -o ./lib/unity.es5.js
 
