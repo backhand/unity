@@ -1,7 +1,7 @@
 {
   "name": "unity",
   "description": "Unified address space for data services",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Frederik Hannibal <frederik@backhand.dk>",
   "repository": {
     "type": "git",

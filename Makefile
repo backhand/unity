@@ -1,7 +1,7 @@
 NODE_0_10=node-010
 NODE_0_12=node-012
 
-JSSRC = lib/unity.js lib/resolver/resolver.js
+JSSRC = lib/unity.js lib/resolver/resolver.js lib/repl/repl.js
 JSOBJS = $(JSSRC:.js=.es5.js)
 
 PARSERSRC = lib/parser.pegjs
@@ -19,6 +19,9 @@ lib/unity.es5.js: lib/unity.js
 
 lib/resolver/resolver.es5.js: lib/resolver/resolver.js
 	node_modules/.bin/babel ./lib/resolver/resolver.js -o ./lib/resolver/resolver.es5.js
+
+lib/repl/repl.es5.js: lib/repl/repl.js
+	node_modules/.bin/babel ./lib/repl/repl.js -o ./lib/repl/repl.es5.js
 
 lib/parser.js: lib/parser.pegjs
 	node_modules/.bin/pegjs ./lib/parser.pegjs ./lib/parser.js
