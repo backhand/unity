@@ -99,9 +99,41 @@ describe('unity', function() {
     });
   });
 
+  it('should sort by a query value in /root/c with query as object', function(done) {
+    instance.get('/root/c', {
+      query: {
+        orderBy: 'id'
+      }
+    }).then(function(result) {
+      assert.ok(result);
+      var lastR = 0;
+      result.forEach(function(r) {
+        assert.ok(r.id > lastR, r.id);
+        lastR = r.id;
+      });
+      done();
+    });
+  });
+
   it('should throw an error on illegal query', function(done) {
     try {
       instance.get('/root/c?gargle=gorgle').then(function(result) {
+        assert.fail('Should not be here');
+        done();
+      });
+    } catch (err) {
+      assert.ok(err instanceof Unity.IllegalQueryError);
+      done();
+    }
+  });
+
+  it('should throw an error on illegal query with query as object', function(done) {
+    try {
+      instance.get('/root/c', {
+        query: {
+          gergle: 'gurgle'
+        }
+      }).then(function(result) {
         assert.fail('Should not be here');
         done();
       });
