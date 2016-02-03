@@ -1,0 +1,8 @@
+{
+  "node": true,
+  "esnext": true,
+  "mocha": true,
+  "globals": { 
+    "actimo": true
+  }
+}

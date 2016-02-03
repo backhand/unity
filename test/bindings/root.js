@@ -1,5 +1,7 @@
+'use strict';
+
 var fs = require('fs');
-var Promise = Promise || require('bluebird');
+var promise = Promise || require('bluebird');
 var _ = require('lodash');
 
 var data = {
@@ -12,7 +14,7 @@ var resolvers = [{
   resolver: function(context) {
     var id = context.id;
 
-    return new Promise(function(resolve, reject) {
+    return new promise(function(resolve, reject) {
       resolve({
         id: id,
         value: 'abc'
@@ -30,7 +32,7 @@ var resolvers = [{
   resolver: function(context) {
     var id = context.id;
 
-    return new Promise(function(resolve, reject) {
+    return new promise(function(resolve, reject) {
       resolve({
         id: id
       });
@@ -57,7 +59,7 @@ var resolvers = [{
       id: 5
     }];
 
-    return new Promise(function(resolve, reject) {
+    return new promise(function(resolve, reject) {
       resolve(_.sortBy(data, context.query.orderBy));
     });
   }
@@ -65,17 +67,17 @@ var resolvers = [{
   path: '/root/d/id:string',
   resolver: {
     get: function(context) {
-      return new Promise(function(resolve, reject) {
+      return new promise(function(resolve, reject) {
         resolve(data.d[context.id]);
       });
     },
     set: function(context, value) {
-      return new Promise(function(resolve, reject) {
+      return new promise(function(resolve, reject) {
         resolve(data.d[context.id] = value);
       });
     },
     del: function(context) {
-      return new Promise(function(resolve, reject) {
+      return new promise(function(resolve, reject) {
         delete data.d[context.id];
         resolve(true);
       });
@@ -86,7 +88,7 @@ var resolvers = [{
   resolver: {
     get: {
       buffer: function(context) {
-        return new Promise(function(resolve, reject) {
+        return new promise(function(resolve, reject) {
           fs.readFile(__dirname + '/../files/' + context.name, function(err, buffer) {
             if(err) {
               return reject(err);
@@ -97,7 +99,7 @@ var resolvers = [{
         });
       },
       stream: function(context) {
-        return new Promise(function(resolve, reject) {
+        return new promise(function(resolve, reject) {
           var stream = fs.createReadStream(__dirname + '/../files/' + context.name);
           resolve(stream);
         });
@@ -105,7 +107,7 @@ var resolvers = [{
     },
     set: {
       buffer: function(context, value) {
-        return new Promise(function(resolve, reject) {
+        return new promise(function(resolve, reject) {
           fs.writeFile(__dirname + '/../files/' + context.name, value, function(err, buffer) {
             if(err) {
               return reject(err);
@@ -116,15 +118,15 @@ var resolvers = [{
         });
       },
       stream: function(context, value) {
-        return new Promise(function(resolve, reject) {
+        return new promise(function(resolve, reject) {
           var stream = fs.createWriteStream(__dirname + '/../files/' + context.name);
           value.pipe(stream).on('error', reject).on('finish', resolve);
         });
       }
     },
     del: function(context) {
-      return new Promise(function(resolve, reject) {
-        fs.unlink(__dirname + '/../files/' + context.name, function(err, buffer) {
+      return new promise(function(resolve, reject) {
+        fs.unlink(__dirname + '/../files/' + context.name, function(err) {
           if(err) {
             return reject(err);
           }
