@@ -134,6 +134,13 @@ var resolvers = [{
       });
     }
   }
+}, {
+  path: '/root/function/value:int',
+  resolver: {
+    run: function(context, params) {
+      return new promise(resolve => resolve(params.value + context.value));
+    }
+  }
 }];
 resolvers.setData = function(value) {
   data = value;

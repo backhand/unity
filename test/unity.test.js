@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('assert');
 var path = require('path');
 var fs = require('fs');
@@ -214,5 +216,13 @@ describe('unity', function() {
       }).catch(function(err) {
         done(err);
       });
+  });
+
+  it('should run a path as a function with parameters', function(done) {
+    instance.run('/root/function/5', { value: 5}).then(function(result) {
+      assert.ok(result);
+      assert.equal(result, 10);
+      done();
+    });
   });
 });
