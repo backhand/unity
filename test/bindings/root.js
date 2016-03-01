@@ -1,7 +1,7 @@
 'use strict';
 
 var fs = require('fs');
-var promise = Promise || require('bluebird');
+var promise = typeof Promise !== 'undefined' ? Promise : require('bluebird');
 var _ = require('lodash');
 
 var data = {
@@ -140,7 +140,9 @@ var resolvers = [{
   path: '/root/function/value:int',
   resolver: {
     run: function(context, params) {
-      return new promise(resolve => resolve(params.value + context.value));
+      return new promise(function(resolve) {
+        resolve(params.value + context.value)
+      });
     }
   }
 }];

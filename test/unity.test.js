@@ -225,4 +225,20 @@ describe('unity', function() {
       done();
     });
   });
+
+  it('should init bindings using alternate format, test #1', function(done) {
+    instance.get('/root/e/f').then(function(result) {
+      assert.ok(result);
+      assert.equal(result, '123');
+      done();
+    });
+  });
+
+  it('should init bindings using alternate format, test #2', function(done) {
+    instance.get('/root/e/g').then(function(result) {
+      assert.ok(result);
+      assert.equal(result, '321');
+      done();
+    });
+  });
 });
