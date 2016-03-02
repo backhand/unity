@@ -38,39 +38,33 @@ describe('unity', function() {
   });
 
   it('should throw an error on unresolvable path', function(done) {
-    try {
-      instance.get('/root/zyx').then(function(result) {
-        assert.fail('Should not be here');
-        done();
-      });
-    } catch (err) {
+    instance.get('/root/zyx').then(function(result) {
+      assert.fail('Should not be here');
+      done();
+    }).catch(function(err) {
       assert.ok(err instanceof Unity.UnresolvablePathError);
       done();
-    }
+    });
   });
 
   it('should throw an error on undefined action', function(done) {
-    try {
-      instance.add('/root/a/1').then(function(result) {
-        assert.fail('Should not be here');
-        done();
-      });
-    } catch (err) {
+    instance.add('/root/a/1').then(function(result) {
+      assert.fail('Should not be here');
+      done();
+    }).catch(function(err) {
       assert.ok(err instanceof Unity.UndefinedActionError);
       done();
-    }
+    });
   });
 
   it('should throw an error on undefined protocol', function(done) {
-    try {
-      instance.get('buffer:///root/a/1').then(function(result) {
-        assert.fail('Should not be here');
-        done();
-      });
-    } catch (err) {
+    instance.get('buffer:///root/a/1').then(function(result) {
+      assert.fail('Should not be here');
+      done();
+    }).catch(function(err) {
       assert.ok(err instanceof Unity.UndefinedProtocolError);
       done();
-    }
+    });
   });
 
   it('should resolve a deferred property value from /root/a/1/value', function(done) {
@@ -118,31 +112,27 @@ describe('unity', function() {
   });
 
   it('should throw an error on illegal query', function(done) {
-    try {
-      instance.get('/root/c?gargle=gorgle').then(function(result) {
-        assert.fail('Should not be here');
-        done();
-      });
-    } catch (err) {
+    instance.get('/root/c?gargle=gorgle').then(function(result) {
+      assert.fail('Should not be here');
+      done();
+    }).catch(function(err) {
       assert.ok(err instanceof Unity.IllegalQueryError);
       done();
-    }
+    });
   });
 
   it('should throw an error on illegal query with query as object', function(done) {
-    try {
-      instance.get('/root/c', {
-        query: {
-          gergle: 'gurgle'
-        }
-      }).then(function(result) {
-        assert.fail('Should not be here');
-        done();
-      });
-    } catch (err) {
+    instance.get('/root/c', {
+      query: {
+        gergle: 'gurgle'
+      }
+    }).then(function(result) {
+      assert.fail('Should not be here');
+      done();
+    }).catch(function(err) {
       assert.ok(err instanceof Unity.IllegalQueryError);
       done();
-    }
+    });
   });
 
   it('should copy a value by path', function(done) {
@@ -184,7 +174,6 @@ describe('unity', function() {
         return instance.del('/root/files/test.png');
       }).then(function(result) {
         try {
-          var stat = fs.statSync(__dirname + '/files/test.png');
           assert.fail('File should not exist');
         } catch(err) {
           assert.ok(err);
@@ -206,7 +195,6 @@ describe('unity', function() {
         return instance.del('/root/files/test.png');
       }).then(function(result) {
         try {
-          var stat = fs.statSync(__dirname + '/files/test.png');
           assert.fail('File should not exist');
         } catch(err) {
           assert.ok(err);
