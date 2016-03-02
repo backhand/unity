@@ -2,6 +2,7 @@
   "node": true,
   "esnext": true,
   "mocha": true,
+  "unused": "vars",
   "globals": { 
     "actimo": true
   }
